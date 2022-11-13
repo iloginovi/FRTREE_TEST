@@ -104,14 +104,16 @@ public:
 					int K = 4;
 					for (int i = 0; i < layers_amount - 2; i++) {
 						K = K * 8;
+						elements += K;
 					}
-					elements += K;
+					
 				}
 			}
 			for (int j = 0; j < elements; j++) {
 				push_back(data,j);
 			}
 			list_size = elements;
+			cout << list_size<<'\n';
 		}
 		cur = root;
 		
@@ -201,16 +203,17 @@ int Type_first_to_second(int X1,int Y1,int X2, int Y2) {
 	}
 }
 
-void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
+void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print, int col_amount) {
 	if (layers_amount < 1) {
 		layers_amount = 1;
 	}
+	int color_count = 1;
 	int cube_l=1; 
 	for (int i = 0; i < layers_amount - 1; i++) {
 		cube_l *= 4;
 	}//задание размеров куба
 	const int size_one = 7;
-	const int size_two = 2;
+	const int size_two = 3;
 	FRactTree<int**>* TestTree = new FRactTree<int**>();
 	int** arr = new int* [size_one];
 	for (int count = 0; count < size_one; count++) {
@@ -254,14 +257,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 			arr[count] = new int[size_two];
 		}
 		//реинициализация массива координат
-		arr[0][0] = A1x; arr[0][1] = A1y;
-		arr[1][0] = A2x; arr[1][1] = A2y;
-		arr[2][0] = A3x; arr[2][1] = A3y;
-		arr[3][0] = A4x; arr[3][1] = A4y;
+		arr[0][0] = A1x; arr[0][1] = A1y; arr[0][2] = color_count;
+		arr[1][0] = A2x; arr[1][1] = A2y; arr[1][2] = color_count;
+		arr[2][0] = A3x; arr[2][1] = A3y; arr[2][2] = color_count;
+		arr[3][0] = A4x; arr[3][1] = A4y; arr[3][2] = color_count;
 		
-		arr[4][0] = 1000; arr[4][1] = 1000;
-		arr[5][0] = 1000; arr[5][1] = 1000;
-		arr[6][0] = 1000; arr[6][1] = 1000;
+		arr[4][0] = 1000; arr[4][1] = 1000; arr[4][2] = color_count;
+		arr[5][0] = 1000; arr[5][1] = 1000; arr[5][2] = color_count;
+		arr[6][0] = 1000; arr[6][1] = 1000; arr[6][2] = color_count;
 		TestTree->cur = TestTree->list_head;
 		TestTree->cur_inlist = TestTree->list_head;
 		TestTree->set_data(arr);
@@ -274,6 +277,8 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 			getarr = TestTree->get_data();
 			int direction=0;
 			int dx1, dx2, dx3, dx4, dx5, dx6, dx7, dy1, dy2, dy3, dy4, dy5, dy6, dy7;
+			int col_f, col_rest;
+			col_f = getarr[0][2]; col_rest = getarr[0][2] + 1;
 			//dir=1
 			int X1 = getarr[0][0]; int Y1 = getarr[0][1];
 			int X2 = getarr[1][0]; int Y2 = getarr[1][1];
@@ -297,6 +302,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 			arr[4][0] = dx5; arr[4][1] = dy5;
 			arr[5][0] = dx6; arr[5][1] = dy6;
 			arr[6][0] = dx7; arr[6][1] = dy7;
+
+			arr[0][2] = col_f;
+			arr[1][2] = col_rest;
+			arr[2][2] = col_rest;
+			arr[3][2] = col_rest;
+			arr[4][2] = col_rest;
+			arr[5][2] = col_rest;
+			arr[6][2] = col_rest;
 			TestTree->cur = TestTree->cur->next_inlist;
 			TestTree->set_data(arr);
 			//dir=2
@@ -322,6 +335,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 			arr[4][0] = dx5; arr[4][1] = dy5;
 			arr[5][0] = dx6; arr[5][1] = dy6;
 			arr[6][0] = dx7; arr[6][1] = dy7;
+
+			arr[0][2] = col_f;
+			arr[1][2] = col_rest;
+			arr[2][2] = col_rest;
+			arr[3][2] = col_rest;
+			arr[4][2] = col_rest;
+			arr[5][2] = col_rest;
+			arr[6][2] = col_rest;
 			TestTree->cur = TestTree->cur->next_inlist;
 			TestTree->set_data(arr);
 			//dir=3
@@ -348,6 +369,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 			arr[4][0] = dx5; arr[4][1] = dy5;
 			arr[5][0] = dx6; arr[5][1] = dy6;
 			arr[6][0] = dx7; arr[6][1] = dy7;
+
+			arr[0][2] = col_f;
+			arr[1][2] = col_rest;
+			arr[2][2] = col_rest;
+			arr[3][2] = col_rest;
+			arr[4][2] = col_rest;
+			arr[5][2] = col_rest;
+			arr[6][2] = col_rest;
 			TestTree->cur = TestTree->cur->next_inlist;
 			TestTree->set_data(arr);
 			//dir=4
@@ -374,19 +403,29 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 			arr[4][0] = dx5; arr[4][1] = dy5; 
 			arr[5][0] = dx6; arr[5][1] = dy6;
 			arr[6][0] = dx7; arr[6][1] = dy7;
+
+			arr[0][2] = col_f;
+			arr[1][2] = col_rest;
+			arr[2][2] = col_rest;
+			arr[3][2] = col_rest;
+			arr[4][2] = col_rest;
+			arr[5][2] = col_rest;
+			arr[6][2] = col_rest;
 			TestTree->cur = TestTree->cur->next_inlist;
 			TestTree->set_data(arr);
 			if (layers_amount >= 3) {
 				int skip_to_parent = 1;
 				int parent_amount = 4;
 				int skip_to_desc = skip_to_parent + parent_amount;
+				int col_fase = 3;
 				for (int g = 0; g < layers_amount - 2; g++) {
 					
 					for (int i = 0; i < parent_amount; i++) {
 						TestTree->set_auxl_pos(i + skip_to_parent);
 						TestTree->cur = TestTree->auxl_pos;
 						getarr = TestTree->get_data();
-						
+						col_f = getarr[0][2];
+						col_rest = getarr[1][2];
 						int dir18;
 						int dir;
 						dir18 = Type_first_to_second(getarr[0][0], getarr[0][1], getarr[6][0], getarr[6][1]);
@@ -446,6 +485,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 							arr[4][0] = dx5; arr[4][1] = dy5;
 							arr[5][0] = dx6; arr[5][1] = dy6;
 							arr[6][0] = dx7; arr[6][1] = dy7;
+
+							arr[0][2] = col_f;
+							arr[1][2] = col_fase;
+							arr[2][2] = col_fase;
+							arr[3][2] = col_fase;
+							arr[4][2] = col_fase;
+							arr[5][2] = col_fase;
+							arr[6][2] = col_fase;
 							TestTree->set_data(arr);
 						}
 						else {
@@ -470,6 +517,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 								arr[4][0] = dx5; arr[4][1] = dy5;
 								arr[5][0] = dx6; arr[5][1] = dy6;
 								arr[6][0] = dx7; arr[6][1] = dy7;
+
+								arr[0][2] = col_f;
+								arr[1][2] = col_fase;
+								arr[2][2] = col_fase;
+								arr[3][2] = col_fase;
+								arr[4][2] = col_fase;
+								arr[5][2] = col_fase;
+								arr[6][2] = col_fase;
 								TestTree->set_data(arr);
 							}
 							else {
@@ -494,6 +549,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 									arr[4][0] = dx5; arr[4][1] = dy5;
 									arr[5][0] = dx6; arr[5][1] = dy6;
 									arr[6][0] = dx7; arr[6][1] = dy7;
+
+									arr[0][2] = col_f;
+									arr[1][2] = col_fase;
+									arr[2][2] = col_fase;
+									arr[3][2] = col_fase;
+									arr[4][2] = col_fase;
+									arr[5][2] = col_fase;
+									arr[6][2] = col_fase;
 									TestTree->set_data(arr);
 								}
 								else {
@@ -518,6 +581,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 										arr[4][0] = dx5; arr[4][1] = dy5;
 										arr[5][0] = dx6; arr[5][1] = dy6;
 										arr[6][0] = dx7; arr[6][1] = dy7;
+
+										arr[0][2] = col_f;
+										arr[1][2] = col_fase;
+										arr[2][2] = col_fase;
+										arr[3][2] = col_fase;
+										arr[4][2] = col_fase;
+										arr[5][2] = col_fase;
+										arr[6][2] = col_fase;
 										TestTree->set_data(arr);
 									}
 								}
@@ -550,6 +621,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 							arr[4][0] = dx5; arr[4][1] = dy5;
 							arr[5][0] = dx6; arr[5][1] = dy6;
 							arr[6][0] = dx7; arr[6][1] = dy7;
+
+							arr[0][2] = col_rest;
+							arr[1][2] = col_fase;
+							arr[2][2] = col_fase;
+							arr[3][2] = col_fase;
+							arr[4][2] = col_fase;
+							arr[5][2] = col_fase;
+							arr[6][2] = col_fase;
 							TestTree->set_data(arr);
 						}
 						else {
@@ -574,6 +653,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 								arr[4][0] = dx5; arr[4][1] = dy5;
 								arr[5][0] = dx6; arr[5][1] = dy6;
 								arr[6][0] = dx7; arr[6][1] = dy7;
+
+								arr[0][2] = col_rest;
+								arr[1][2] = col_fase;
+								arr[2][2] = col_fase;
+								arr[3][2] = col_fase;
+								arr[4][2] = col_fase;
+								arr[5][2] = col_fase;
+								arr[6][2] = col_fase;
 								TestTree->set_data(arr);
 							}
 							else {
@@ -598,6 +685,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 									arr[4][0] = dx5; arr[4][1] = dy5;
 									arr[5][0] = dx6; arr[5][1] = dy6;
 									arr[6][0] = dx7; arr[6][1] = dy7;
+
+									arr[0][2] = col_rest;
+									arr[1][2] = col_fase;
+									arr[2][2] = col_fase;
+									arr[3][2] = col_fase;
+									arr[4][2] = col_fase;
+									arr[5][2] = col_fase;
+									arr[6][2] = col_fase;
 									TestTree->set_data(arr);
 								}
 								else {
@@ -622,6 +717,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 										arr[4][0] = dx5; arr[4][1] = dy5;
 										arr[5][0] = dx6; arr[5][1] = dy6;
 										arr[6][0] = dx7; arr[6][1] = dy7;
+
+										arr[0][2] = col_rest;
+										arr[1][2] = col_fase;
+										arr[2][2] = col_fase;
+										arr[3][2] = col_fase;
+										arr[4][2] = col_fase;
+										arr[5][2] = col_fase;
+										arr[6][2] = col_fase;
 										TestTree->set_data(arr);
 									}
 								}
@@ -654,6 +757,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 							arr[4][0] = dx5; arr[4][1] = dy5;
 							arr[5][0] = dx6; arr[5][1] = dy6;
 							arr[6][0] = dx7; arr[6][1] = dy7;
+
+							arr[0][2] = col_rest;
+							arr[1][2] = col_fase;
+							arr[2][2] = col_fase;
+							arr[3][2] = col_fase;
+							arr[4][2] = col_fase;
+							arr[5][2] = col_fase;
+							arr[6][2] = col_fase;
 							TestTree->set_data(arr);
 						}
 						else {
@@ -678,6 +789,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 								arr[4][0] = dx5; arr[4][1] = dy5;
 								arr[5][0] = dx6; arr[5][1] = dy6;
 								arr[6][0] = dx7; arr[6][1] = dy7;
+
+								arr[0][2] = col_rest;
+								arr[1][2] = col_fase;
+								arr[2][2] = col_fase;
+								arr[3][2] = col_fase;
+								arr[4][2] = col_fase;
+								arr[5][2] = col_fase;
+								arr[6][2] = col_fase;
 								TestTree->set_data(arr);
 							}
 							else {
@@ -702,6 +821,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 									arr[4][0] = dx5; arr[4][1] = dy5;
 									arr[5][0] = dx6; arr[5][1] = dy6;
 									arr[6][0] = dx7; arr[6][1] = dy7;
+
+									arr[0][2] = col_rest;
+									arr[1][2] = col_fase;
+									arr[2][2] = col_fase;
+									arr[3][2] = col_fase;
+									arr[4][2] = col_fase;
+									arr[5][2] = col_fase;
+									arr[6][2] = col_fase;
 									TestTree->set_data(arr);
 								}
 								else {
@@ -726,6 +853,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 										arr[4][0] = dx5; arr[4][1] = dy5;
 										arr[5][0] = dx6; arr[5][1] = dy6;
 										arr[6][0] = dx7; arr[6][1] = dy7;
+
+										arr[0][2] = col_rest;
+										arr[1][2] = col_fase;
+										arr[2][2] = col_fase;
+										arr[3][2] = col_fase;
+										arr[4][2] = col_fase;
+										arr[5][2] = col_fase;
+										arr[6][2] = col_fase;
 										TestTree->set_data(arr);
 									}
 								}
@@ -758,6 +893,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 							arr[4][0] = dx5; arr[4][1] = dy5;
 							arr[5][0] = dx6; arr[5][1] = dy6;
 							arr[6][0] = dx7; arr[6][1] = dy7;
+
+							arr[0][2] = col_rest;
+							arr[1][2] = col_fase;
+							arr[2][2] = col_fase;
+							arr[3][2] = col_fase;
+							arr[4][2] = col_fase;
+							arr[5][2] = col_fase;
+							arr[6][2] = col_fase;
 							TestTree->set_data(arr);
 						}
 						else {
@@ -782,6 +925,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 								arr[4][0] = dx5; arr[4][1] = dy5;
 								arr[5][0] = dx6; arr[5][1] = dy6;
 								arr[6][0] = dx7; arr[6][1] = dy7;
+
+								arr[0][2] = col_rest;
+								arr[1][2] = col_fase;
+								arr[2][2] = col_fase;
+								arr[3][2] = col_fase;
+								arr[4][2] = col_fase;
+								arr[5][2] = col_fase;
+								arr[6][2] = col_fase;
 								TestTree->set_data(arr);
 							}
 							else {
@@ -806,6 +957,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 									arr[4][0] = dx5; arr[4][1] = dy5;
 									arr[5][0] = dx6; arr[5][1] = dy6;
 									arr[6][0] = dx7; arr[6][1] = dy7;
+
+									arr[0][2] = col_rest;
+									arr[1][2] = col_fase;
+									arr[2][2] = col_fase;
+									arr[3][2] = col_fase;
+									arr[4][2] = col_fase;
+									arr[5][2] = col_fase;
+									arr[6][2] = col_fase;
 									TestTree->set_data(arr);
 								}
 								else {
@@ -830,6 +989,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 										arr[4][0] = dx5; arr[4][1] = dy5;
 										arr[5][0] = dx6; arr[5][1] = dy6;
 										arr[6][0] = dx7; arr[6][1] = dy7;
+
+										arr[0][2] = col_rest;
+										arr[1][2] = col_fase;
+										arr[2][2] = col_fase;
+										arr[3][2] = col_fase;
+										arr[4][2] = col_fase;
+										arr[5][2] = col_fase;
+										arr[6][2] = col_fase;
 										TestTree->set_data(arr);
 									}
 								}
@@ -862,6 +1029,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 							arr[4][0] = dx5; arr[4][1] = dy5;
 							arr[5][0] = dx6; arr[5][1] = dy6;
 							arr[6][0] = dx7; arr[6][1] = dy7;
+
+							arr[0][2] = col_rest;
+							arr[1][2] = col_fase;
+							arr[2][2] = col_fase;
+							arr[3][2] = col_fase;
+							arr[4][2] = col_fase;
+							arr[5][2] = col_fase;
+							arr[6][2] = col_fase;
 							TestTree->set_data(arr);
 						}
 						else {
@@ -886,6 +1061,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 								arr[4][0] = dx5; arr[4][1] = dy5;
 								arr[5][0] = dx6; arr[5][1] = dy6;
 								arr[6][0] = dx7; arr[6][1] = dy7;
+
+								arr[0][2] = col_rest;
+								arr[1][2] = col_fase;
+								arr[2][2] = col_fase;
+								arr[3][2] = col_fase;
+								arr[4][2] = col_fase;
+								arr[5][2] = col_fase;
+								arr[6][2] = col_fase;
 								TestTree->set_data(arr);
 							}
 							else {
@@ -910,6 +1093,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 									arr[4][0] = dx5; arr[4][1] = dy5;
 									arr[5][0] = dx6; arr[5][1] = dy6;
 									arr[6][0] = dx7; arr[6][1] = dy7;
+
+									arr[0][2] = col_rest;
+									arr[1][2] = col_fase;
+									arr[2][2] = col_fase;
+									arr[3][2] = col_fase;
+									arr[4][2] = col_fase;
+									arr[5][2] = col_fase;
+									arr[6][2] = col_fase;
 									TestTree->set_data(arr);
 								}
 								else {
@@ -934,6 +1125,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 										arr[4][0] = dx5; arr[4][1] = dy5;
 										arr[5][0] = dx6; arr[5][1] = dy6;
 										arr[6][0] = dx7; arr[6][1] = dy7;
+
+										arr[0][2] = col_rest;
+										arr[1][2] = col_fase;
+										arr[2][2] = col_fase;
+										arr[3][2] = col_fase;
+										arr[4][2] = col_fase;
+										arr[5][2] = col_fase;
+										arr[6][2] = col_fase;
 										TestTree->set_data(arr);
 									}
 								}
@@ -966,6 +1165,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 							arr[4][0] = dx5; arr[4][1] = dy5;
 							arr[5][0] = dx6; arr[5][1] = dy6;
 							arr[6][0] = dx7; arr[6][1] = dy7;
+
+							arr[0][2] = col_rest;
+							arr[1][2] = col_fase;
+							arr[2][2] = col_fase;
+							arr[3][2] = col_fase;
+							arr[4][2] = col_fase;
+							arr[5][2] = col_fase;
+							arr[6][2] = col_fase;
 							TestTree->set_data(arr);
 						}
 						else {
@@ -990,6 +1197,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 								arr[4][0] = dx5; arr[4][1] = dy5;
 								arr[5][0] = dx6; arr[5][1] = dy6;
 								arr[6][0] = dx7; arr[6][1] = dy7;
+
+								arr[0][2] = col_rest;
+								arr[1][2] = col_fase;
+								arr[2][2] = col_fase;
+								arr[3][2] = col_fase;
+								arr[4][2] = col_fase;
+								arr[5][2] = col_fase;
+								arr[6][2] = col_fase;
 								TestTree->set_data(arr);
 							}
 							else {
@@ -1014,6 +1229,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 									arr[4][0] = dx5; arr[4][1] = dy5;
 									arr[5][0] = dx6; arr[5][1] = dy6;
 									arr[6][0] = dx7; arr[6][1] = dy7;
+
+									arr[0][2] = col_rest;
+									arr[1][2] = col_fase;
+									arr[2][2] = col_fase;
+									arr[3][2] = col_fase;
+									arr[4][2] = col_fase;
+									arr[5][2] = col_fase;
+									arr[6][2] = col_fase;
 									TestTree->set_data(arr);
 								}
 								else {
@@ -1038,6 +1261,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 										arr[4][0] = dx5; arr[4][1] = dy5;
 										arr[5][0] = dx6; arr[5][1] = dy6;
 										arr[6][0] = dx7; arr[6][1] = dy7;
+
+										arr[0][2] = col_rest;
+										arr[1][2] = col_fase;
+										arr[2][2] = col_fase;
+										arr[3][2] = col_fase;
+										arr[4][2] = col_fase;
+										arr[5][2] = col_fase;
+										arr[6][2] = col_fase;
 										TestTree->set_data(arr);
 									}
 								}
@@ -1070,6 +1301,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 							arr[4][0] = dx5; arr[4][1] = dy5;
 							arr[5][0] = dx6; arr[5][1] = dy6;
 							arr[6][0] = dx7; arr[6][1] = dy7;
+
+							arr[0][2] = col_rest;
+							arr[1][2] = col_fase;
+							arr[2][2] = col_fase;
+							arr[3][2] = col_fase;
+							arr[4][2] = col_fase;
+							arr[5][2] = col_fase;
+							arr[6][2] = col_fase;
 							TestTree->set_data(arr);
 						}
 						else {
@@ -1094,6 +1333,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 								arr[4][0] = dx5; arr[4][1] = dy5;
 								arr[5][0] = dx6; arr[5][1] = dy6;
 								arr[6][0] = dx7; arr[6][1] = dy7;
+
+								arr[0][2] = col_rest;
+								arr[1][2] = col_fase;
+								arr[2][2] = col_fase;
+								arr[3][2] = col_fase;
+								arr[4][2] = col_fase;
+								arr[5][2] = col_fase;
+								arr[6][2] = col_fase;
 								TestTree->set_data(arr);
 							}
 							else {
@@ -1118,6 +1365,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 									arr[4][0] = dx5; arr[4][1] = dy5;
 									arr[5][0] = dx6; arr[5][1] = dy6;
 									arr[6][0] = dx7; arr[6][1] = dy7;
+
+									arr[0][2] = col_rest;
+									arr[1][2] = col_fase;
+									arr[2][2] = col_fase;
+									arr[3][2] = col_fase;
+									arr[4][2] = col_fase;
+									arr[5][2] = col_fase;
+									arr[6][2] = col_fase;
 									TestTree->set_data(arr);
 								}
 								else {
@@ -1142,6 +1397,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 										arr[4][0] = dx5; arr[4][1] = dy5;
 										arr[5][0] = dx6; arr[5][1] = dy6;
 										arr[6][0] = dx7; arr[6][1] = dy7;
+
+										arr[0][2] = col_rest;
+										arr[1][2] = col_fase;
+										arr[2][2] = col_fase;
+										arr[3][2] = col_fase;
+										arr[4][2] = col_fase;
+										arr[5][2] = col_fase;
+										arr[6][2] = col_fase;
 										TestTree->set_data(arr);
 									}
 								}
@@ -1174,6 +1437,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 							arr[4][0] = dx5; arr[4][1] = dy5;
 							arr[5][0] = dx6; arr[5][1] = dy6;
 							arr[6][0] = dx7; arr[6][1] = dy7;
+
+							arr[0][2] = col_f;
+							arr[1][2] = col_fase;
+							arr[2][2] = col_fase;
+							arr[3][2] = col_fase;
+							arr[4][2] = col_fase;
+							arr[5][2] = col_fase;
+							arr[6][2] = col_fase;
 							TestTree->set_data(arr);
 						}
 						else {
@@ -1198,6 +1469,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 								arr[4][0] = dx5; arr[4][1] = dy5;
 								arr[5][0] = dx6; arr[5][1] = dy6;
 								arr[6][0] = dx7; arr[6][1] = dy7;
+
+								arr[0][2] = col_f;
+								arr[1][2] = col_fase;
+								arr[2][2] = col_fase;
+								arr[3][2] = col_fase;
+								arr[4][2] = col_fase;
+								arr[5][2] = col_fase;
+								arr[6][2] = col_fase;
 								TestTree->set_data(arr);
 							}
 							else {
@@ -1222,6 +1501,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 									arr[4][0] = dx5; arr[4][1] = dy5;
 									arr[5][0] = dx6; arr[5][1] = dy6;
 									arr[6][0] = dx7; arr[6][1] = dy7;
+
+									arr[0][2] = col_f;
+									arr[1][2] = col_fase;
+									arr[2][2] = col_fase;
+									arr[3][2] = col_fase;
+									arr[4][2] = col_fase;
+									arr[5][2] = col_fase;
+									arr[6][2] = col_fase;
 									TestTree->set_data(arr);
 								}
 								else {
@@ -1246,6 +1533,14 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 										arr[4][0] = dx5; arr[4][1] = dy5;
 										arr[5][0] = dx6; arr[5][1] = dy6;
 										arr[6][0] = dx7; arr[6][1] = dy7;
+
+										arr[0][2] = col_f;
+										arr[1][2] = col_fase;
+										arr[2][2] = col_fase;
+										arr[3][2] = col_fase;
+										arr[4][2] = col_fase;
+										arr[5][2] = col_fase;
+										arr[6][2] = col_fase;
 										TestTree->set_data(arr);
 									}
 								}
@@ -1254,6 +1549,7 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 						//
 						skip_to_desc += 8;
 					}
+					col_fase++;
 					skip_to_parent = skip_to_parent+parent_amount;
 					parent_amount = parent_amount * 8;
 					//skip_to_desc = skip_to_parent + parent_amount;
@@ -1319,30 +1615,18 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 				}
 			}
 		}
-		/*
+		
 		int number = 1;
 		TestTree->cur = TestTree->list_head;
 		TestTree->cur_inlist = TestTree->list_head;
 		while (TestTree->cur != nullptr) {
 			readarr = TestTree->get_data();
-			cout << "N: " << number << " " << "( " << readarr[0][0] << ", " << readarr[0][1] << " ), " << "( " << readarr[1][0] << ", " << readarr[1][1] << " ), " << "( " << readarr[2][0] << ", " << readarr[2][1] << " ), " << "( " << readarr[3][0] << ", " << readarr[3][1] << " ), " << "( " << readarr[4][0] << ", " << readarr[4][1] << " ), " << "( " << readarr[5][0] << ", " << readarr[5][1] << " ), " << "( " << readarr[6][0] << ", " << readarr[6][1] << " ), " << '\n';
+			cout << "N: " << number << " " << "( " << readarr[0][0] << ", " << readarr[0][1] << ", col = "<< readarr[0][2]<<" ), " << "(" << readarr[1][0] << ", " << readarr[1][1] << ", col = " << readarr[1][2] << "), " << "(" << readarr[2][0] << ", " << readarr[2][1] << ", col = " << readarr[2][2] << "), " << "(" << readarr[3][0] << ", " << readarr[3][1] << ", col = " << readarr[3][2] << "), " << "(" << readarr[4][0] << ", " << readarr[4][1] << ", col = " << readarr[4][2] << "), " << "(" << readarr[5][0] << ", " << readarr[5][1] << ", col = " << readarr[5][2] << "), " << "(" << readarr[6][0] << ", " << readarr[6][1] << ", col = " << readarr[6][2] << "), " << '\n';
 			number++;
 			TestTree->cur = TestTree->cur->next_inlist;
-		}*/
-		/*cout << "\n";
-		TestTree->cur = TestTree->cur->next_inlist; fase++;
-		readarr = TestTree->get_data();
-		cout << "fase: " << fase << " 1 - " << "( " << readarr[0][0] << ", " << readarr[0][1] << ");\n";
-		cout << "fase: " << fase << " 2 - " << "( " << readarr[1][0] << ", " << readarr[1][1] << ");\n";
-		cout << "fase: " << fase << " 3 - " << "( " << readarr[2][0] << ", " << readarr[2][1] << ");\n";
-		cout << "fase: " << fase << " 4 - " << "( " << readarr[3][0] << ", " << readarr[3][1] << ");\n";
-		if (fase > 1) {
-			cout << "fase: " << fase << " 5 - " << "( " << readarr[4][0] << ", " << readarr[4][1] << ");\n";
-			cout << "fase: " << fase << " 6 - " << "( " << readarr[5][0] << ", " << readarr[5][1] << ");\n";
-			cout << "fase: " << fase << " 7 - " << "( " << readarr[6][0] << ", " << readarr[6][1] << ");\n";
-
 		}
-		*/
+		
+		
 		
 		
 	}
@@ -1352,6 +1636,6 @@ void COOR_COUNT(int x0,int y0, int layers_amount, int** to_print) {
 int main() {
 	//TEST();
 	int** to_print = new int* [1];
-	COOR_COUNT(100, 100, 3,to_print);
+	COOR_COUNT(100, 100, 4,to_print,4);
 	return 0;
 }
