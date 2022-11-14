@@ -113,7 +113,7 @@ public:
 				push_back(data,j);
 			}
 			list_size = elements;
-			cout << list_size<<'\n';
+			//cout << list_size<<'\n';
 		}
 		cur = root;
 		
@@ -240,7 +240,7 @@ int** COOR_COUNT(int x0,int y0, int layers_amount, int col_amount) {
 	}
 	
 	int** to_print = new int* [coor_amount];
-	cout << coor_amount << '\n';
+	//cout << coor_amount << '\n';
 	for (int i = 0; i < coor_amount; i++) {
 		to_print[i] = new int[3];
 	}
@@ -1748,7 +1748,7 @@ int** COOR_COUNT(int x0,int y0, int layers_amount, int col_amount) {
 			}
 			
 		}
-		
+		/*
 		int number = 1;
 		TestTree->cur = TestTree->list_head;
 		TestTree->cur_inlist = TestTree->list_head;
@@ -1757,7 +1757,7 @@ int** COOR_COUNT(int x0,int y0, int layers_amount, int col_amount) {
 			cout << "N: " << number << " " << "( " << readarr[0][0] << ", " << readarr[0][1] << ", col = "<< readarr[0][2]<<" ), " << "(" << readarr[1][0] << ", " << readarr[1][1] << ", col = " << readarr[1][2] << "), " << "(" << readarr[2][0] << ", " << readarr[2][1] << ", col = " << readarr[2][2] << "), " << "(" << readarr[3][0] << ", " << readarr[3][1] << ", col = " << readarr[3][2] << "), " << "(" << readarr[4][0] << ", " << readarr[4][1] << ", col = " << readarr[4][2] << "), " << "(" << readarr[5][0] << ", " << readarr[5][1] << ", col = " << readarr[5][2] << "), " << "(" << readarr[6][0] << ", " << readarr[6][1] << ", col = " << readarr[6][2] << "), " << '\n';
 			number++;
 			TestTree->cur = TestTree->cur->next_inlist;
-		}
+		}*/
 		
 		
 		
@@ -1765,6 +1765,33 @@ int** COOR_COUNT(int x0,int y0, int layers_amount, int col_amount) {
 	return to_print;
 }
 //
+
+void get_square_coor(int X1, int Y1,int X2, int Y2,int dir, int& x, int &y) {
+	
+	int L = 0;
+	if (dir == 1) {
+		L = (X1 - X2) / 2;
+		x = X2 + L; y = Y2 + L;
+	} else {
+		if (dir == 2) {
+			L = (Y2 - Y1) / 2;
+			x = X1 - L; y = Y1 + L;
+		} else {
+			if (dir == 3) {
+				L = (X2 - X1) / 2;
+				x = X1 + L; y = Y1 + L;
+			}
+			else {
+				if (dir == 4) {
+					L = (Y1 - Y2) / 2;
+					x = X1 + L; y = Y1 - L;
+				}
+			}
+		}
+	}
+	
+	
+}
 
 int** TREE_DATA_FORM(int x0, int y0, int layers_amount, int col_amount) {
 	if (layers_amount < 1) {
@@ -1803,7 +1830,7 @@ int** TREE_DATA_FORM(int x0, int y0, int layers_amount, int col_amount) {
 	}
 
 	int** to_print = new int* [coor_amount];
-	cout << coor_amount << '\n';
+	//cout << coor_amount << '\n';
 	for (int i = 0; i < coor_amount; i++) {
 		to_print[i] = new int[3];
 	}
@@ -3133,6 +3160,76 @@ int** TREE_DATA_FORM(int x0, int y0, int layers_amount, int col_amount) {
 			}
 
 		}
+		//
+		if (layers_amount >= 1) {
+			int elements_amount=1;
+			if (layers_amount >= 2) {
+				elements_amount += 4;
+				int koef = 4;
+				if (layers_amount >= 3) {
+					for (int k = 0; k < layers_amount - 2; k++) {
+						koef *= 8;
+						elements_amount += koef;
+					}
+				}
+			}
+			int** ret_tree = new int* [elements_amount];
+			for (int j = 0; j < elements_amount; j++) {
+				ret_tree[j] = new int[3];
+			}
+			int** readarr = new int* [size_one];
+			for (int count = 0; count < size_one; count++) {
+				readarr[count] = new int[size_two];
+			}
+			TestTree->cur = TestTree->list_head;
+			TestTree->cur_inlist = TestTree->list_head;
+
+			readarr=TestTree->get_data();
+			int x = 0;int y = 0;
+			int dir=0;
+			
+			
+			ret_tree[0][0] = x0; ret_tree[0][1] = y0, ret_tree[0][2] = readarr[4][2];
+			if (layers_amount >= 2) {
+				TestTree->cur = TestTree->cur->next_inlist;
+				readarr = TestTree->get_data();
+				dir = Type_first_to_second(readarr[0][0], readarr[0][1], readarr[6][0], readarr[6][1]);
+				get_square_coor(readarr[3][0], readarr[3][1], readarr[5][0], readarr[5][1], dir, x, y);
+				ret_tree[1][0] = x; ret_tree[1][1] = y, ret_tree[1][2] = readarr[4][2];
+				TestTree->cur = TestTree->cur->next_inlist;
+				readarr = TestTree->get_data();
+				dir = Type_first_to_second(readarr[0][0], readarr[0][1], readarr[6][0], readarr[6][1]);
+				get_square_coor(readarr[3][0], readarr[3][1], readarr[5][0], readarr[5][1], dir, x, y);
+				ret_tree[2][0] = x; ret_tree[2][1] = y, ret_tree[2][2] = readarr[4][2];
+				TestTree->cur = TestTree->cur->next_inlist;
+				readarr = TestTree->get_data();
+				dir = Type_first_to_second(readarr[0][0], readarr[0][1], readarr[6][0], readarr[6][1]);
+				get_square_coor(readarr[3][0], readarr[3][1], readarr[5][0], readarr[5][1], dir, x, y);
+				ret_tree[3][0] = x; ret_tree[3][1] = y, ret_tree[3][2] = readarr[4][2];
+				TestTree->cur = TestTree->cur->next_inlist;
+				readarr = TestTree->get_data();
+				dir = Type_first_to_second(readarr[0][0], readarr[0][1], readarr[6][0], readarr[6][1]);
+				get_square_coor(readarr[3][0], readarr[3][1], readarr[5][0], readarr[5][1], dir, x, y);
+				ret_tree[4][0] = x; ret_tree[4][1] = y, ret_tree[4][2] = readarr[4][2];
+				if (layers_amount >= 3) {
+					int desc_amount = 32;
+					int skip_to_desc = 5;
+					for (int g = 0; g < layers_amount - 2; g++) {
+						TestTree->go_to_elem_in_list(skip_to_desc);
+						for (int i = 0; i < desc_amount; i++) {
+							TestTree->cur = TestTree->cur->next_inlist;
+							readarr = TestTree->get_data();
+							dir = Type_first_to_second(readarr[0][0], readarr[0][1], readarr[6][0], readarr[6][1]);
+							get_square_coor(readarr[3][0], readarr[3][1], readarr[5][0], readarr[5][1], dir, x, y);
+							ret_tree[skip_to_desc+i][0] = x; ret_tree[skip_to_desc + i][1] = y, ret_tree[skip_to_desc + i][2] = readarr[4][2];
+						}
+						skip_to_desc = skip_to_desc + desc_amount;
+						desc_amount *= 8;
+					}
+				}
+			}
+			return ret_tree;
+		}
 	}
 }
 int main() {
@@ -3141,6 +3238,7 @@ int main() {
 	int layers_amount = 3;
 
 	int**  to_print = COOR_COUNT(100, 100, layers_amount,4);
+	int** tree_form = TREE_DATA_FORM(100, 100, layers_amount, 4);
 	int coor_amount = 0;
 	if (layers_amount == 1) {
 		coor_amount = 4;
@@ -3160,7 +3258,25 @@ int main() {
 		coor_amount = coor_amount * 8;
 	}
 	for (int i = 0; i < coor_amount; i++) {
-		cout <<"N: "<<i+1 << "(" << to_print[i][0] << ", " << to_print[i][1] << ") col = " << to_print[i][2] << '\n';
+		//cout <<"N: "<<i+1 << "(" << to_print[i][0] << ", " << to_print[i][1] << ") col = " << to_print[i][2] << '\n';
+	}
+	int elem_amount = 0;
+	if (layers_amount >= 1) {
+		elem_amount = 1;
+		if (layers_amount >= 2) {
+			elem_amount += 4;
+			if (layers_amount >= 3) {
+				int k = 4;
+				for (int i = 0; i < layers_amount - 2; i++) {
+					k *= 8;
+					elem_amount += k;
+				}
+			}
+		}
+	}
+	cout << '\n';
+	for (int i = 0; i < elem_amount; i++) {
+		cout << "Num: " << i + 1 << "  " << tree_form[i][0] << "  " << tree_form[i][1] << " col: " << tree_form[i][2] << '\n';
 	}
 	return 0;
 }
